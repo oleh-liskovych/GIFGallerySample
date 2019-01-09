@@ -3,4 +3,14 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="alpha_black">#8A000000</color>
+    <color name="gray_type_1">#F3F3F3</color>
+    <color name="gray_type_2">#969696</color>
+    <color name="background_alpha_black">@color/alpha_black</color>
+
+    <color name="bg_auth_avatar">@color/gray_type_2</color>
+    <color name="button_text_color">@android:color/white</color>
+    <color name="common_text_color">@android:color/black</color>
+    <color name="background_transparent">@android:color/transparent</color>
 </resources>

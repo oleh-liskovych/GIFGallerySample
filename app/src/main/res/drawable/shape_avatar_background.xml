@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@android:color/black"
+    >
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@color/bg_auth_avatar" />
+        </shape>
+    </item>
+    <item
+        android:width="@dimen/auth_avatar_icon_size"
+        android:height="@dimen/auth_avatar_icon_size"
+        android:gravity="center"
+        android:drawable="@drawable/ic_add_photo" />
+</ripple>
