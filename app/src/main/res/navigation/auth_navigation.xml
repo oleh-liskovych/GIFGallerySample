@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/auth_navigation">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_navigation"
+    app:startDestination="@id/sign_in">
+
+    <fragment
+        android:id="@+id/sign_in"
+        android:name="oleh.liskovych.gallerygif.ui.screens.auth.sign_in.SignInFragment"
+        android:label="Sign In"
+        tools:layout="@layout/fragment_sign_in">
+
+        <action
+            android:id="@+id/to_sign_up"
+            app:destination="@id/sign_up"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/sign_in" />
+
+        <action
+            android:id="@+id/to_main"
+            app:destination="@+id/main_activity"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/fade_out"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/sign_up"
+        android:name="oleh.liskovych.gallerygif.ui.screens.auth.sign_up.SignUpFragment"
+        android:label="Sign Up"
+        tools:layout="@layout/fragment_sign_up">
+
+        <action
+            android:id="@+id/to_main"
+            app:destination="@+id/main_activity"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/fade_out"
+            />
+
+    </fragment>
+
+    <activity
+        android:id="@+id/main_activity"
+        android:name="oleh.liskovych.gallerygif.ui.screens.main.MainActivity"
+        android:label="Activity Main"
+        tools:layout="@layout/activity_main" />
 
 </navigation>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GalleryGIF</string>
+    <string name="app_name">Gallery GIF</string>
 
     <string name="title">Title</string>
     <string name="splash">Splash</string>
@@ -10,5 +10,10 @@
     <string name="hint_username">Username</string>
 
     <string name="sign_in_message_no_account">Don\'t have account?</string>
+
+    <string name="content_description_splash_picture">Blot</string>
+
+    <string name="email_is_empty">Email address field is empty</string>
+    <string name="email_is_invalid">Email address is not in valid format</string>
 
 </resources>
