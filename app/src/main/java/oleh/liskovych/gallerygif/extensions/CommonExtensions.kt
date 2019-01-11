@@ -2,10 +2,14 @@ package oleh.liskovych.gallerygif.extensions
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.widget.EditText
+import androidx.core.content.FileProvider
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.io.File
 
 fun Context.isNetworkConnected() = with(getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager) {
     @Suppress("DEPRECATION")
@@ -45,6 +49,17 @@ fun TextInputLayout.markRequired() {
     hint = "$hint *"
 }
 
+fun hideInputFieldsErrors(vararg views: TextInputEditText) {
+    views.forEach {
+        it.error = null
+    }
+}
+
 fun EditText.getStringText(): String {
     return this.text.toString().trim()
 }
+
+fun Context.getIntegerRes(intRes: Int) = this.resources.getInteger(intRes)
+
+fun File.getUri(context: Context, authority: String): Uri =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) FileProvider.getUriForFile(context, authority, this) else Uri.fromFile(this)

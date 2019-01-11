@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvCamera"
+        style="@style/PickPictureOption"
+        android:drawableStart="@drawable/ic_camera"
+        android:text="@string/picture_capture_with_camera"
+        />
+
+    <TextView
+        android:id="@+id/tvGallery"
+        style="@style/PickPictureOption"
+        android:drawableStart="@drawable/ic_gallery"
+        android:text="@string/picture_pick_from_gallery"
+        />
+
+
+</LinearLayout>

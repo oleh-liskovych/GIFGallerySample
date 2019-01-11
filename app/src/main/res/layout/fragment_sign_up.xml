@@ -25,15 +25,15 @@
         android:layout_height="@dimen/auth_avatar_size"
         android:background="@drawable/shape_avatar_background"
         android:clickable="true"
-        android:contentDescription="@null"
         android:focusable="true"
+        android:contentDescription="@null"
         app:layout_constraintBottom_toTopOf="@id/tilUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:src="" />
+        />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilUsername"

@@ -4,5 +4,9 @@
     <integer name="fade_animaton_duration">700</integer>
     <integer name="slide_horizontal_animation_duration">400</integer>
     <integer name="slide_vertical_animation_duration">300</integer>
+    <integer name="password_min_length">6</integer>
+    <integer name="password_max_length">45</integer>
+    <integer name="username_default_min_length">6</integer>
+    <integer name="username_default_max_length">50</integer>
 
 </resources>

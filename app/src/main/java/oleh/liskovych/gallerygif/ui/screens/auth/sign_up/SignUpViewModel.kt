@@ -10,6 +10,7 @@ import oleh.liskovych.gallerygif.utils.validation.common.Validator
 class SignUpViewModel(application: Application): BaseViewModel(application) {
 
     private val emailValidator: Validator by lazy { ValidatorFactory.emailValidator(application) }
+    private val passwordValidator: Validator by lazy { ValidatorFactory.passwordValidator(application) }
 
     val isValid = MutableLiveData<Boolean>()
     val isEmailValid = MutableLiveData<ValidationResponse>()
@@ -18,14 +19,18 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
     val emailError = MutableLiveData<String>()
     val passwordError = MutableLiveData<String>()
 
-    fun validateUserData(username: String,
-                         email: String,
+    fun validateUserData(email: String,
                          password: String) {
-        isValid.value = validateEmail(email) and true
+        isValid.value = validateEmail(email) and
+                        validatePassword(password)
     }
 
     private fun validateEmail(email: String) =
         validate(emailValidator, email, isEmailValid)
+
+    private fun validatePassword(password: String) =
+        validate(passwordValidator, password, isPasswordsValid)
+
 
     private fun validate(validator: Validator, data: String, validationLiveData: MutableLiveData<ValidationResponse>) =
         let {

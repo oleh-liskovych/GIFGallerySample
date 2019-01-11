@@ -3,6 +3,6 @@
 
     <translate android:fromXDelta="0%" android:toXDelta="0%"
         android:fromYDelta="100%" android:toYDelta="0%"
-        android:duration="@integer/slide_vertical_animation_duration" />
-
+        android:duration="150"
+        android:interpolator="@android:anim/linear_interpolator" />
 </set>

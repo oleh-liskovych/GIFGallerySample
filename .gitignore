@@ -24,7 +24,14 @@ Thumbs.db
 # Android Studio
 *.iml
 .gradle
-.idea
+.idea/*
+# Exclude files which are not specific to the user
+!.idea/codeStyles/*
+!.idea/misc.xml
+!.idea/vcs.xml
+!.idea/runConfigurations.xml
+# stores arrangement of fragments in the navigation graph
+!.idea/navEditor.xml
 .DS_Store
 /build
 /captures

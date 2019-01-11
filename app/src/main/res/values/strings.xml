@@ -13,7 +13,17 @@
 
     <string name="content_description_splash_picture">Blot</string>
 
-    <string name="email_is_empty">Email address field is empty</string>
-    <string name="email_is_invalid">Email address is not in valid format</string>
+    <!-- Validation messages -->
+    <string name="default_error_email_is_empty">Email field is required</string>
+    <string name="default_error_email_is_invalid">Email is not valid</string>
+    <string name="error_email_is_empty">Email address field is empty</string>
+    <string name="error_email_is_invalid">Email address is not in valid format</string>
+    <string name="password_is_empty">Password field is empty</string>
+    <string name="password_is_invalid">Password should contain at least one character and number</string>
+    <string name="password_min_length_error">Password shouldn\'t be shorter than %1$d symbols</string>
+    <string name="password_max_length_error">Password should be at most %1$d symbols long</string>
+
+    <string name="picture_capture_with_camera">Capture with Camera</string>
+    <string name="picture_pick_from_gallery">Pick from Gallery</string>
 
 </resources>
