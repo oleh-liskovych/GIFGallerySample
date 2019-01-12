@@ -69,4 +69,5 @@ dependencies {
 
     // Secure preferences
     implementation "com.scottyab:secure-preferences-lib:$secure_prefs_version"
+
 }

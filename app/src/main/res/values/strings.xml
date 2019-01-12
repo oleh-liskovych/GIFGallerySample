@@ -22,8 +22,15 @@
     <string name="password_is_invalid">Password should contain at least one character and number</string>
     <string name="password_min_length_error">Password shouldn\'t be shorter than %1$d symbols</string>
     <string name="password_max_length_error">Password should be at most %1$d symbols long</string>
+    <string name="default_error_profile_picture_is_absent">Profile picture is required</string>
+    <string name="default_error_profile_picture_is_invalid">Profile picture path is not valid</string>
+    <string name="profile_picture_is_absent">!</string>
+    <string name="profile_picture_is_invalid">@string/profile_picture_is_absent</string>
 
+    <!-- Taking picture -->
     <string name="picture_capture_with_camera">Capture with Camera</string>
     <string name="picture_pick_from_gallery">Pick from Gallery</string>
+
+    <string name="something_went_wrong">Something went wrong&#8230;</string>
 
 </resources>

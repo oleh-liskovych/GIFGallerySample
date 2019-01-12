@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.view.View
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -63,3 +64,5 @@ fun Context.getIntegerRes(intRes: Int) = this.resources.getInteger(intRes)
 
 fun File.getUri(context: Context, authority: String): Uri =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) FileProvider.getUriForFile(context, authority, this) else Uri.fromFile(this)
+
+fun Context.getCompatColor(colorId: Int) = ContextCompat.getColor(this, colorId)

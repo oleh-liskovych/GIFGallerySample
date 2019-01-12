@@ -35,6 +35,18 @@
         app:layout_constraintVertical_chainStyle="packed"
         />
 
+    <TextView
+        style="@style/ProfilePictureValidationMark"
+        android:id="@+id/tvPictureValidationMark"
+        android:text="@string/profile_picture_is_absent"
+        android:layout_marginStart="@dimen/margin_16"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        app:layout_constraintStart_toEndOf="@id/ivProfilePicture"
+        app:layout_constraintTop_toTopOf="@id/ivProfilePicture"
+        app:layout_constraintBottom_toBottomOf="@id/ivProfilePicture"
+        />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilUsername"
         style="@style/TextInputLayout"

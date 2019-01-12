@@ -19,7 +19,8 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
     val emailError = MutableLiveData<String>()
     val passwordError = MutableLiveData<String>()
 
-    fun validateUserData(email: String,
+    fun validateUserData(picturePath: String?,
+                         email: String,
                          password: String) {
         isValid.value = validateEmail(email) and
                         validatePassword(password)
