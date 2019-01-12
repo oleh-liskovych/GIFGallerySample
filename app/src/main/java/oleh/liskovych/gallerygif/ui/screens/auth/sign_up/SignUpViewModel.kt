@@ -11,10 +11,12 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
 
     private val emailValidator: Validator by lazy { ValidatorFactory.emailValidator(application) }
     private val passwordValidator: Validator by lazy { ValidatorFactory.passwordValidator(application) }
+    private val picturePathValidator: Validator by lazy { ValidatorFactory.picturePathValidator(application) }
 
     val isValid = MutableLiveData<Boolean>()
     val isEmailValid = MutableLiveData<ValidationResponse>()
     val isPasswordsValid = MutableLiveData<ValidationResponse>()
+    val isPicturePathValid = MutableLiveData<ValidationResponse>()
 
     val emailError = MutableLiveData<String>()
     val passwordError = MutableLiveData<String>()
@@ -22,9 +24,13 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
     fun validateUserData(picturePath: String?,
                          email: String,
                          password: String) {
-        isValid.value = validateEmail(email) and
+        isValid.value = validatePicturePath(picturePath) and
+                        validateEmail(email) and
                         validatePassword(password)
     }
+
+    private fun validatePicturePath(picturePath: String?) =
+        validate(picturePathValidator, picturePath, isPicturePathValid)
 
     private fun validateEmail(email: String) =
         validate(emailValidator, email, isEmailValid)
@@ -33,7 +39,7 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
         validate(passwordValidator, password, isPasswordsValid)
 
 
-    private fun validate(validator: Validator, data: String, validationLiveData: MutableLiveData<ValidationResponse>) =
+    private fun validate(validator: Validator, data: String?, validationLiveData: MutableLiveData<ValidationResponse>) =
         let {
             validationLiveData.value = validator.validate(data)
             validationLiveData.value?.isValid

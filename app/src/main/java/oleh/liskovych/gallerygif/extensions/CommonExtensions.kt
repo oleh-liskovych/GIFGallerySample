@@ -11,6 +11,7 @@ import androidx.core.content.FileProvider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.io.File
+import java.io.InputStream
 
 fun Context.isNetworkConnected() = with(getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager) {
     @Suppress("DEPRECATION")
@@ -66,3 +67,11 @@ fun File.getUri(context: Context, authority: String): Uri =
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) FileProvider.getUriForFile(context, authority, this) else Uri.fromFile(this)
 
 fun Context.getCompatColor(colorId: Int) = ContextCompat.getColor(this, colorId)
+
+fun File.copyInputStreamToFile(inputStream: InputStream) {
+    inputStream.use { input ->
+        this.outputStream().use { fileOut ->
+            input.copyTo(fileOut)
+        }
+    }
+}

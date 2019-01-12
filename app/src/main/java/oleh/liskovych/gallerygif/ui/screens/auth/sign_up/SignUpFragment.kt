@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Patterns
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -22,7 +21,7 @@ import oleh.liskovych.gallerygif.ui.base.BaseFragment
 import oleh.liskovych.gallerygif.ui.base.RequestCode
 import oleh.liskovych.gallerygif.ui.screens.auth.sign_up.dialog.TakePictureDialog
 import oleh.liskovych.gallerygif.ui.screens.auth.sign_up.dialog.TakePictureType
-import oleh.liskovych.gallerygif.utils.FileUtils
+import oleh.liskovych.gallerygif.utils.FileUtils.pickedExistingPicture
 import oleh.liskovych.gallerygif.utils.ImageUtils
 import oleh.liskovych.gallerygif.utils.bindInterfaceOrThrow
 import oleh.liskovych.gallerygif.utils.validation.common.ValidationResponse
@@ -58,11 +57,22 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
         showValidationError(etPassword, it)
     }
 
+    private val pictureObserver = Observer<ValidationResponse> { response ->
+        response.run {
+            if (!isValid)
+                tvPictureValidationMark.run {
+                    show()
+                    text = errorMessage
+                }
+            }
+    }
+
     override fun observeLiveData(viewModel: SignUpViewModel) {
         with(viewModel) {
             isValid.observe(this@SignUpFragment, validationObserver)
             isEmailValid.observe(this@SignUpFragment, emailObserver)
             isPasswordsValid.observe(this@SignUpFragment, passwordObserver)
+            isPicturePathValid.observe(this@SignUpFragment,pictureObserver)
         }
     }
 
@@ -72,7 +82,7 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
         markFieldsRequired(tilEmail, tilPassword)
         savedInstanceState?.let {
             currentTempPhotoPath = it.getString(CURRENT_TEMP_PHOTO_PATH_EXTRA)
-            currentTempPhotoPath?.run {  capturePictureWithCameraResult() }
+            currentTempPhotoPath?.run { capturePictureWithCameraResult() }
             photoPath = it.getString(PHOTO_PATH_EXTRA)
             photoPath?.let { path -> showAvatar(path) }
         }
@@ -89,6 +99,7 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
     override fun onClick(view: View) {
         when (view.id) {
             R.id.ivProfilePicture -> fragmentManager?.let {
+                tvPictureValidationMark.hide()
                 TakePictureDialog.newInstance(this, RequestCode.REQUEST_DIALOG_TAKE_PICTURE())
                     .show(it, TakePictureDialog::class.java.simpleName)
             }
@@ -103,7 +114,9 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
                 when (requestCode) {
                     RequestCode.REQUEST_DIALOG_TAKE_PICTURE() ->
                         data?.let { dialogTakePictureResult(it.getSerializableExtra(TakePictureDialog.TAKE_PICTURE_EXTRA) as TakePictureType) }
-                    RequestCode.REQUEST_CAPTURE_PICTURE_WITH_CAMERA() -> { capturePictureWithCameraResult() }
+                    RequestCode.REQUEST_CAPTURE_PICTURE_WITH_CAMERA() -> {
+                        capturePictureWithCameraResult()
+                    }
                     RequestCode.REQUEST_PICK_PICTURE_FROM_GALLERY() -> data?.data?.let {
                         pickImageFromGalleryResult(it)
                     }
@@ -112,10 +125,12 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
         }
     }
 
-    private fun pickImageFromGalleryResult(uri: Uri) =
-        FileUtils.getContentPath(ctx, uri)?.let {
+    private fun pickImageFromGalleryResult(uri: Uri) {
+        pickedExistingPicture(ctx, uri).path?.let {
             pickImage(it)
         }
+
+    }
 
     private fun dialogTakePictureResult(type: TakePictureType) {
         when (type) {
@@ -130,8 +145,10 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
             .subscribe { granted ->
                 if (granted) {
                     context?.let {
-                        startActivityForResult(ImageUtils.createImagePickIntentFromGallery(it),
-                            RequestCode.REQUEST_PICK_PICTURE_FROM_GALLERY())
+                        startActivityForResult(
+                            ImageUtils.createImagePickIntentFromGallery(it),
+                            RequestCode.REQUEST_PICK_PICTURE_FROM_GALLERY()
+                        )
                     }
                 }
             }
@@ -145,29 +162,48 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
                 if (granted) {
                     ImageUtils.createImagePickIntentFromCamera(
                         ctx,
-                        { ImageUtils.createImageFileTemp(ctx, false).also { currentTempPhotoPath = it.absolutePath } }, FILE_PROVIDER_NAME)
-                        ?.let { startActivityForResult(it, RequestCode.REQUEST_CAPTURE_PICTURE_WITH_CAMERA()) } }
+                        {
+                            ImageUtils.createImageFileTemp(ctx, false).also { currentTempPhotoPath = it.absolutePath }
+                        }, FILE_PROVIDER_NAME
+                    )
+                        ?.let { startActivityForResult(it, RequestCode.REQUEST_CAPTURE_PICTURE_WITH_CAMERA()) }
+                }
             })
     }
 
     private fun showAvatar(uri: Uri) {
-        ivProfilePicture.loadCircularImage(uri.toString(), R.drawable.shape_avatar_background_progress, R.drawable.shape_avatar_background_error)
+        ivProfilePicture.loadCircularImage(
+            uri.toString(),
+            R.drawable.shape_avatar_background_progress,
+            R.drawable.shape_avatar_background_error
+        )
     }
 
     private fun showAvatar(path: String) {
-        ivProfilePicture.loadCircularImage(path, R.drawable.shape_avatar_background_progress, R.drawable.shape_avatar_background_error)
+        ivProfilePicture.loadCircularImage(
+            path,
+            R.drawable.shape_avatar_background_progress,
+            R.drawable.shape_avatar_background_error
+        )
     }
-
 
 
     private fun capturePictureWithCameraResult() =
         currentTempPhotoPath?.let { pickImage(it) }
 
     private fun pickImage(imagePath: String) {
+        photoPath = imagePath
         if (imagePath.isNotEmpty()) {
             ImageUtils.run {
                 compressImageFromUri(Uri.fromFile(File(imagePath)), maxSize = MAX_SIZE_IMAGE)
-                    ?.let { File(imagePath).takeIf { file -> saveBitmap(file, modifyImageToNormalOrientation(it, imagePath)) } }
+                    ?.let {
+                        File(imagePath).takeIf { file ->
+                            saveBitmap(
+                                file,
+                                modifyImageToNormalOrientation(it, imagePath)
+                            )
+                        }
+                    }
                     ?.let { imageFile -> showAvatar(Uri.fromFile(imageFile)) }
             }
         }
@@ -188,7 +224,7 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
     }
 
     private fun validateUserData() = viewModel.validateUserData(
-        "", etEmail.getStringText(), etPassword.getStringText()
+        photoPath, etEmail.getStringText(), etPassword.getStringText()
     )
 
     private fun navigateToMain() {

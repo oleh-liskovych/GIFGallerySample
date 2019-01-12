@@ -20,11 +20,13 @@ android {
         all {
             buildConfigField "String", "SECURE_PREF_NAME", '"sample_prefs.xml"'
             buildConfigField "String", "SECURE_PREF_PASSWORD", '"SophicticatedPassword9939"'
+
         }
 
         debug {
             minifyEnabled false
             debuggable true
+            buildConfigField("String", "ENDPOINT", '"http://api.doitserver.in.ua/"')
         }
 
         release {
@@ -70,4 +72,16 @@ dependencies {
     // Secure preferences
     implementation "com.scottyab:secure-preferences-lib:$secure_prefs_version"
 
+    // Retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-jackson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+
+    // Jackson
+    implementation "com.fasterxml.jackson.core:jackson-core:$jackson_version"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$jackson_version"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
+    implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.3"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okttp_version"
 }
