@@ -46,7 +46,7 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
     private var photoPath: String? = null
 
     private val validationObserver = Observer<Boolean> {
-        if (it) navigateToMain()
+        signUp(it)
     }
 
     private val emailObserver = Observer<ValidationResponse> {
@@ -206,6 +206,12 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
                     }
                     ?.let { imageFile -> showAvatar(Uri.fromFile(imageFile)) }
             }
+        }
+    }
+
+    private fun signUp(valid: Boolean) {
+        if (valid && !photoPath.isNullOrEmpty()) {
+            viewModel.sendSignUpRequest(photoPath!!, etUsername.getStringText(), etEmail.getStringText(), etPassword.getStringText())
         }
     }
 

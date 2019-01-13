@@ -32,5 +32,7 @@
     <string name="picture_pick_from_gallery">Pick from Gallery</string>
 
     <string name="something_went_wrong">Something went wrong&#8230;</string>
+    <string name="server_error">Please check your internet connection.</string>
+    <string name="no_internet_connection">No internet connection</string>
 
 </resources>

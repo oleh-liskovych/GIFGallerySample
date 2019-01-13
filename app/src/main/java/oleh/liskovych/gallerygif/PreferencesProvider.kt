@@ -7,7 +7,7 @@ internal object PreferencesProvider {
     private val preferences = App.securePrefs
 
     var token: String
-        get() = preferences.getString(TOKEN, EMPTY_STRING_VALUE)
+        get() = preferences.getString(TOKEN, EMPTY_STRING_VALUE) ?: EMPTY_STRING_VALUE
         set(value) {
             preferences.edit()
                 .putString(TOKEN, value)

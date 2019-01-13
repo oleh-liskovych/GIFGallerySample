@@ -27,7 +27,7 @@ class SignInFragment: BaseFragment<SignInViewModel>(), View.OnClickListener {
     private var callback: SignInCallback? = null
 
     private val validationObserver = Observer<Boolean> {
-        if (it) navigateToMain()
+        signIn(it)
     }
 
     private val emailObserver = Observer<ValidationResponse> {
@@ -68,6 +68,10 @@ class SignInFragment: BaseFragment<SignInViewModel>(), View.OnClickListener {
     override fun onDetach() {
         callback = null
         super.onDetach()
+    }
+
+    private fun signIn(valid: Boolean) {
+        if (valid) { viewModel.sendSignInRequest(etEmail.getStringText(), etPassword.getStringText()) }
     }
 
     private fun showValidationError(textInput: TextInputEditText, response: ValidationResponse) {

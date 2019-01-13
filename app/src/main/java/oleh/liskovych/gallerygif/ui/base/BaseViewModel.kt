@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import oleh.liskovych.gallerygif.utils.withNotNull
 import java.util.function.Consumer
 
 abstract class BaseViewModel(application: Application): AndroidViewModel(application) {
@@ -22,7 +23,9 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
     val isLoadingLiveData = MediatorLiveData<Boolean>()
 
     val onErrorConsumer = Consumer<Throwable> {
+//        val errorString = parseApiException(it)
         errorLiveData.value = it.message
+        hideProgress()
     }
 
     fun setLoadingLiveData(vararg liveDataArgs: MutableLiveData<*>) {
@@ -55,6 +58,9 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
     private fun showProgress(show: Boolean) {
         isLoadingLiveData.value = show
     }
+
+//    fun parseApiException(throwable: Throwable) =
+//            withNotNull(throwable as? Api)
 
     fun Disposable.addSubscription() = backgroundSubscriptions.add(this)
 
