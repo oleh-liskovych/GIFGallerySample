@@ -1,20 +1,21 @@
 package oleh.liskovych.gallerygif.ui.screens.auth.sign_up
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import oleh.liskovych.gallerygif.network.SNetworkModule
-import oleh.liskovych.gallerygif.network.modules.UserModule
-import oleh.liskovych.gallerygif.network.modules.UserModuleImpl
+import io.reactivex.functions.Consumer
+import oleh.liskovych.gallerygif.models.User
+import oleh.liskovych.gallerygif.providers.ProviderInjector
+import oleh.liskovych.gallerygif.providers.UserProvider
 import oleh.liskovych.gallerygif.ui.base.BaseViewModel
 import oleh.liskovych.gallerygif.utils.ValidatorFactory
 import oleh.liskovych.gallerygif.utils.ioToMain
 import oleh.liskovych.gallerygif.utils.validation.common.ValidationResponse
 import oleh.liskovych.gallerygif.utils.validation.common.Validator
-import java.util.function.Consumer
 
 class SignUpViewModel(application: Application): BaseViewModel(application) {
 
-    private val userModule: UserModule by lazy { SNetworkModule.getUserModule() }
+    private val userProvider: UserProvider by lazy { ProviderInjector.getUserProvider() }
 
     private val emailValidator: Validator by lazy { ValidatorFactory.emailValidator(application) }
     private val passwordValidator: Validator by lazy { ValidatorFactory.passwordValidator(application) }
@@ -24,9 +25,18 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
     val isEmailValid = MutableLiveData<ValidationResponse>()
     val isPasswordsValid = MutableLiveData<ValidationResponse>()
     val isPicturePathValid = MutableLiveData<ValidationResponse>()
+    val isSignUpSuccess = MutableLiveData<Boolean>()
 
     val emailError = MutableLiveData<String>()
     val passwordError = MutableLiveData<String>()
+
+    private val signUpSuccessConsumer = Consumer<User> {
+        isSignUpSuccess.postValue(true)
+    }
+
+    private val onSignUpError = Consumer<Throwable> {
+        // todo: Implement this method
+    }
 
     fun validateUserData(picturePath: String?,
                          email: String,
@@ -52,17 +62,16 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
             validationLiveData.value?.isValid
         } ?: false
 
-    private val onSignUpError = Consumer<Throwable> {
-
-    }
-
     fun sendSignUpRequest(filePath: String,
                           username: String,
                           email: String,
                           password:String) {
-        isLoadingLiveData.value = true
-        userModule.signUp(filePath, username, email, password)
+        showProgress()
+        userProvider
+            .signUp(filePath, username, email, password)
+            .doOnEach { hideProgress() }
             .compose(ioToMain())
-            .subscribe()
+            .subscribe(signUpSuccessConsumer, onSignUpError)
+            .addSubscription()
     }
 }

@@ -8,7 +8,9 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import oleh.liskovych.gallerygif.BuildConfig
 import oleh.liskovych.gallerygif.PreferencesProvider
+import oleh.liskovych.gallerygif.network.api.ImageApi
 import oleh.liskovych.gallerygif.network.api.UserApi
+import oleh.liskovych.gallerygif.network.modules.ImageModuleImpl
 import oleh.liskovych.gallerygif.network.modules.UserModuleImpl
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -37,7 +39,7 @@ object SNetworkModule {
         connectTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT_IN_SECONDS, TimeUnit.SECONDS)
-            .addInterceptor { chain ->
+            .addInterceptor { chain ->PreferencesProvider
                 val original = chain.request()
                 val requestBuilder = original.newBuilder()
                     .header(HEADER_TOKEN_NAME, PreferencesProvider.token)
@@ -54,4 +56,6 @@ object SNetworkModule {
 
 
     fun getUserModule() = UserModuleImpl(retrofit.create(UserApi::class.java))
+    fun getImageModule() = ImageModuleImpl(retrofit.create(ImageApi::class.java))
+
 }

@@ -30,6 +30,10 @@ class SignInFragment: BaseFragment<SignInViewModel>(), View.OnClickListener {
         signIn(it)
     }
 
+    private val signInSuccessObserver = Observer<Boolean> {
+        if (it) navigateToMain()
+    }
+
     private val emailObserver = Observer<ValidationResponse> {
         showValidationError(etEmail, it)
     }
@@ -50,6 +54,7 @@ class SignInFragment: BaseFragment<SignInViewModel>(), View.OnClickListener {
             isValid.observe(this@SignInFragment, validationObserver)
             isEmailValid.observe(this@SignInFragment, emailObserver)
             isPasswordsValid.observe(this@SignInFragment, passwordObserver)
+            isSignInSuccess.observe(this@SignInFragment, signInSuccessObserver)
         }
     }
 

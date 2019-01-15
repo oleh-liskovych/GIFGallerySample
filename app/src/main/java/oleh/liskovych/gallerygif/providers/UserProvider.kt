@@ -9,11 +9,10 @@ import oleh.liskovych.gallerygif.network.modules.UserModule
 import oleh.liskovych.gallerygif.providers.base.BaseOnlineProvider
 import oleh.liskovych.gallerygif.providers.base.Provider
 
+
 class UserProvider: BaseOnlineProvider<User, UserModule>(), Provider<User> {
 
     override fun initNetworkModule(): UserModule = SNetworkModule.getUserModule()
-
-    override fun initNewModel(): User = UserModel()
 
     fun signUp(filePath: String,
                username: String,

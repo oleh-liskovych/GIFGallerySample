@@ -49,6 +49,10 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
         signUp(it)
     }
 
+    private val signUpSuccessObserver = Observer<Boolean> {
+        if (it) navigateToMain()
+    }
+
     private val emailObserver = Observer<ValidationResponse> {
         showValidationError(etEmail, it)
     }
@@ -73,6 +77,7 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
             isEmailValid.observe(this@SignUpFragment, emailObserver)
             isPasswordsValid.observe(this@SignUpFragment, passwordObserver)
             isPicturePathValid.observe(this@SignUpFragment,pictureObserver)
+            isSignUpSuccess.observe(this@SignUpFragment, signUpSuccessObserver)
         }
     }
 

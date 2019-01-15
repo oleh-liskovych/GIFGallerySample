@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import oleh.liskovych.gallerygif.R
 import oleh.liskovych.gallerygif.extensions.loadImage
@@ -77,6 +78,8 @@ class GalleryAdapter(context: Context, callback: GalleryAdapterCallback) :
             "Seventh"
         )
 
+        private val set = ConstraintSet()
+
         private val cvRoot = itemView.find<View>(R.id.cvRoot)
         private val ivPicture = itemView.find<ImageView>(R.id.ivPicture)
         private val tvDescription = itemView.find<TextView>(R.id.tvDescription)
@@ -87,6 +90,8 @@ class GalleryAdapter(context: Context, callback: GalleryAdapterCallback) :
             tvDescription.text = dummyDescription[adapterPosition]
             tvHashtag.text = dummyHashtag[adapterPosition]
             setClickListeners(cvRoot)
+
+//            val ratio = String.format("%d:%d", picture)
         }
 
         override fun onClick(v: View) {

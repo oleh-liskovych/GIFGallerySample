@@ -13,4 +13,4 @@ interface User: Model {
 @Parcelize
 class UserModel(override var creationTime: DateTime? = null,
                 override var token: String? = null,
-                override var avatar: String? = null) : User, Parcelable
+                override var avatar: String? = null) : User

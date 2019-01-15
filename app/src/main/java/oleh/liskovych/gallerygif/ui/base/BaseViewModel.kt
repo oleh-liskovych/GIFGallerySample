@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import oleh.liskovych.gallerygif.utils.withNotNull
-import java.util.function.Consumer
 
 abstract class BaseViewModel(application: Application): AndroidViewModel(application) {
 
@@ -23,8 +23,8 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
     val isLoadingLiveData = MediatorLiveData<Boolean>()
 
     val onErrorConsumer = Consumer<Throwable> {
-//        val errorString = parseApiException(it)
-        errorLiveData.value = it.message
+//        val errorString = parseApiException(it)   // todo: Parse Api Exception
+        errorLiveData.postValue(it.message)
         hideProgress()
     }
 
@@ -32,7 +32,7 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
         liveDataArgs.forEach { liveData ->
             isLoadingLiveData.apply {
                 this.removeSource(liveData)
-                this.addSource(liveData) { this.value = false }
+                this.addSource(liveData) { this.postValue(false) }
             }
         }
     }
@@ -42,21 +42,21 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
     }
 
     override fun onCleared() {
-        isLoadingLiveData.value = false
+        isLoadingLiveData.postValue(false)
         clearSubscriptions()
         super.onCleared()
     }
 
     fun showProgress() {
-        isLoadingLiveData.value = true
+        isLoadingLiveData.postValue(false)
     }
 
     fun hideProgress() {
-        isLoadingLiveData.value = false
+        isLoadingLiveData.postValue(false)
     }
 
     private fun showProgress(show: Boolean) {
-        isLoadingLiveData.value = show
+        isLoadingLiveData.postValue(false)
     }
 
 //    fun parseApiException(throwable: Throwable) =

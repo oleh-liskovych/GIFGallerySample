@@ -8,5 +8,4 @@ abstract class BaseOnlineProvider<M: Model, NetworkModule>: Provider<M> {
 
     protected abstract fun initNetworkModule(): NetworkModule
 
-    abstract fun initNewModel(): M
 }
