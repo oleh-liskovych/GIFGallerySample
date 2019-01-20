@@ -33,7 +33,7 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(),
 
     protected open var navHostFragmentId = R.id.nav_host_fragment
 
-    private fun hasProgressBar(): Boolean = false
+    protected open fun hasProgressBar(): Boolean = false
 
     private fun getProgressBarId() = R.id.progressView
 

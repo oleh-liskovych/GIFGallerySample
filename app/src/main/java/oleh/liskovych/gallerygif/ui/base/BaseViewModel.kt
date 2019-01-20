@@ -47,8 +47,8 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
         super.onCleared()
     }
 
-    fun showProgress() {
-        isLoadingLiveData.postValue(false)
+    open fun showProgress() {
+        isLoadingLiveData.postValue(true)
     }
 
     fun hideProgress() {
@@ -56,7 +56,7 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
     }
 
     private fun showProgress(show: Boolean) {
-        isLoadingLiveData.postValue(false)
+        isLoadingLiveData.postValue(show)
     }
 
 //    fun parseApiException(throwable: Throwable) =

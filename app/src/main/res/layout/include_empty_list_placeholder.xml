@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clEmptyListPlaceholder"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="invisible"
+    tools:visibility="visible">
+
+    <ImageView
+        android:id="@+id/ivClouds"
+        android:layout_width="120dp"
+        android:layout_height="65dp"
+        android:contentDescription="@null"
+        android:src="@drawable/art_cloud"
+        app:layout_constraintBottom_toTopOf="@+id/tvEmptyListLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/tvEmptyListLabel"
+        style="@style/EmptyStateLabels"
+        android:text="@string/empty_list_label"
+        android:textSize="@dimen/text_size_l"
+        android:layout_marginTop="@dimen/margin_16"
+        app:layout_constraintBottom_toTopOf="@+id/tvEmptyListPrompt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivClouds" />
+
+    <TextView
+        android:id="@+id/tvEmptyListPrompt"
+        style="@style/EmptyStateLabels"
+        android:text="@string/empty_list_prompt"
+        android:layout_marginTop="@dimen/padding_4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmptyListLabel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

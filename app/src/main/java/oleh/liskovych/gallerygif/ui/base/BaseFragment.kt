@@ -46,6 +46,8 @@ abstract class BaseFragment<T : BaseViewModel> : Fragment(),
 
     abstract fun observeLiveData(viewModel: T)
 
+
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         baseView = bindInterfaceOrThrow<BaseView>(parentFragment, context)

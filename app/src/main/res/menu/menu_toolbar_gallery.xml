@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/actionExit"
+        android:icon="@drawable/ic_toolbar_exit"
+        android:title="@string/menu_action_exit"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/actionAdd"
+        android:icon="@drawable/ic_toolbar_add"
+        android:title="@string/menu_action_add"
+        app:showAsAction="always" />
+    <item android:id="@+id/actionPlayGif"
+        android:icon="@drawable/ic_toolbar_play_gif"
+        android:title="@string/menu_action_play_gif"
+        app:showAsAction="always" />
+</menu>

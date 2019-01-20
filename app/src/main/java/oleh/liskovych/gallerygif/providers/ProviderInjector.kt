@@ -1,8 +1,7 @@
 package oleh.liskovych.gallerygif.providers
 
 object ProviderInjector {
+    val userProvider: UserProvider by lazy { UserProvider() }
 
-    fun getUserProvider() = UserProvider()
-
-    fun getImageProvider() = ImageProvider()
+    val imageProvider: ImageProvider by lazy { ImageProvider() }
 }

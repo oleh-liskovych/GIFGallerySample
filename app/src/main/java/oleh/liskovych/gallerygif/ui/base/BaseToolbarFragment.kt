@@ -1,11 +1,16 @@
 package oleh.liskovych.gallerygif.ui.base
 
+import android.os.Bundle
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import oleh.liskovych.gallerygif.EMPTY_STRING_VALUE
+import oleh.liskovych.gallerygif.EMPTY_STRING
+import oleh.liskovych.gallerygif.R
+import org.jetbrains.anko.find
 
-abstract class BaseToolbarFragment<T : BaseViewModel>: BaseFragment<T>() {
+abstract class BaseToolbarFragment<T : BaseViewModel> : BaseFragment<T>() {
 
     companion object {
         const val NO_TITLE = -1
@@ -13,23 +18,81 @@ abstract class BaseToolbarFragment<T : BaseViewModel>: BaseFragment<T>() {
 
     protected var toolbar: Toolbar? = null
 
-    @IdRes
-    protected abstract fun getToolbarId(): Int
+    @get:IdRes
+    protected abstract val toolbarId: Int
 
-    @StringRes
-    protected abstract fun getScreenTitle(): Int
+    @get:StringRes
+    protected abstract val screenTitleRes: Int
 
-    protected open fun needToShowBackNav() = true
+    protected abstract val showToolbarBackArrow: Boolean
 
-    protected fun getStringScreenTitle() =
-        if (getScreenTitle() != NO_TITLE) {
-            getString(getScreenTitle())
-        } else {
-            EMPTY_STRING_VALUE
-        }
+    protected open var backNavigationIcon: Int = R.drawable.ic_back_arrow
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initToolbar()
+    }
 
     private fun initToolbar() {
-        view?.apply {}
+        toolbar = view?.find(toolbarId)
+        with(activity as AppCompatActivity) {
+            setSupportActionBar(toolbar)
+            supportActionBar?.let {
+                setupActionBar(it)
+                if (showToolbarBackArrow) {
+                    toolbar?.run {
+                        setNavigationIcon(backNavigationIcon)
+                        setNavigationOnClickListener { _ -> onBackPressed() }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getStringScreenTitle(@StringRes titleRes: Int) =
+        if (titleRes != NO_TITLE) getString(titleRes) else EMPTY_STRING
+
+
+    protected fun setupActionBar(actionBar: ActionBar) {
+        actionBar.apply {
+            title = getString(screenTitleRes)
+            setDisplayHomeAsUpEnabled(showToolbarBackArrow)
+        }
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

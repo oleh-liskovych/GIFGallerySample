@@ -12,7 +12,7 @@ interface Image: Model {
 }
 
 @Parcelize
-class ImageModel(override var id: Long? = null,
+data class ImageModel(override var id: Long? = null,
                  override var parameters: ImageParameters? = null,
                  override var smallImagePath: String? = null,
                  override var bigImagePath: String? = null,

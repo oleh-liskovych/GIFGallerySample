@@ -19,6 +19,9 @@ class App: Application() {
         securePrefs = SecurePreferences(this,
             BuildConfig.SECURE_PREF_PASSWORD,
             BuildConfig.SECURE_PREF_NAME)
+    }
 
+    fun logout(){
+        PreferencesProvider.token = EMPTY_STRING
     }
 }

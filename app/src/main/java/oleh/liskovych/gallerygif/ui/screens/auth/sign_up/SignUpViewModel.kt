@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import io.reactivex.functions.Consumer
 import oleh.liskovych.gallerygif.models.User
 import oleh.liskovych.gallerygif.providers.ProviderInjector
+import oleh.liskovych.gallerygif.providers.ProviderInjector.userProvider
 import oleh.liskovych.gallerygif.providers.UserProvider
 import oleh.liskovych.gallerygif.ui.base.BaseViewModel
 import oleh.liskovych.gallerygif.utils.ValidatorFactory
@@ -14,8 +15,6 @@ import oleh.liskovych.gallerygif.utils.validation.common.ValidationResponse
 import oleh.liskovych.gallerygif.utils.validation.common.Validator
 
 class SignUpViewModel(application: Application): BaseViewModel(application) {
-
-    private val userProvider: UserProvider by lazy { ProviderInjector.getUserProvider() }
 
     private val emailValidator: Validator by lazy { ValidatorFactory.emailValidator(application) }
     private val passwordValidator: Validator by lazy { ValidatorFactory.passwordValidator(application) }
@@ -29,6 +28,13 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
 
     val emailError = MutableLiveData<String>()
     val passwordError = MutableLiveData<String>()
+
+    init {
+        isLoadingLiveData.apply {
+            addSource(isSignUpSuccess) { this.value = false }
+            addSource(errorLiveData) { this.value = false }
+        }
+    }
 
     private val signUpSuccessConsumer = Consumer<User> {
         isSignUpSuccess.postValue(true)
@@ -66,9 +72,9 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
                           username: String,
                           email: String,
                           password:String) {
-        showProgress()
         userProvider
             .signUp(filePath, username, email, password)
+            .doOnRequest { showProgress() }
             .doOnEach { hideProgress() }
             .compose(ioToMain())
             .subscribe(signUpSuccessConsumer, onSignUpError)

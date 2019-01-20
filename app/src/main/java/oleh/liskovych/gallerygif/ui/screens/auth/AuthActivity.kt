@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import oleh.liskovych.gallerygif.R
 import oleh.liskovych.gallerygif.ui.base.BaseActivity
+import oleh.liskovych.gallerygif.ui.base.interfaces.BaseView
 import oleh.liskovych.gallerygif.ui.screens.auth.sign_in.SignInCallback
 import oleh.liskovych.gallerygif.ui.screens.auth.sign_up.SignUpCallback
 import org.jetbrains.anko.intentFor
@@ -15,7 +16,6 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
     SignUpCallback {
 
     companion object {
-
         fun start(context: Context) {
             with(context) {
                 intentFor<AuthActivity>()
@@ -28,13 +28,7 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
     override val viewModelClass = AuthViewModel::class.java
     override val layoutId = R.layout.activity_auth
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
-        super.onCreate(savedInstanceState)
-    }
+    override fun hasProgressBar() = true
 
     override fun observeLiveData(viewModel: AuthViewModel) {
         // do nothing

@@ -1,9 +1,10 @@
 package oleh.liskovych.gallerygif
 
 const val SNACK_BAR_MAX_LINES = 5
-const val EMPTY_STRING_VALUE = ""
+const val EMPTY_STRING = ""
 const val FILE_PROVIDER_NAME = "oleh.liskovych.gallerygif.fileprovider"
-const val DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss"
+const val DATETIME_PATTERN_USER = "yyyy-MM-dd HH:mm:ss"
+const val DATETIME_PATTERN_IMAGE = "dd-MM-yyyy HH:mm:ss"
 
 object JsonKeywords {
     const val USERNAME = "username"

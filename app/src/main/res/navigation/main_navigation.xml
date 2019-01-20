@@ -11,7 +11,36 @@
         android:label="Gallery"
         tools:layout="@layout/fragment_gallery"
         >
+        <action
+            android:id="@+id/to_upload"
+            app:destination="@id/upload_fragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@+id/gallery_fragment" />
+
+        <action
+            android:id="@+id/to_auth"
+            app:destination="@+id/auth_activity"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/fade_out"
+            />
 
     </fragment>
+
+    <fragment android:id="@+id/upload_fragment"
+        android:name="oleh.liskovych.gallerygif.ui.screens.main.upload.UploadFragment"
+        android:label="Upload"
+        tools:layout="@layout/fragment_upload"
+        >
+
+    </fragment>
+
+    <activity
+        android:id="@+id/auth_activity"
+        android:name="oleh.liskovych.gallerygif.ui.screens.auth.AuthActivity"
+        android:label="Activity Auth"
+        tools:layout="@layout/activity_auth" />
 
 </navigation>

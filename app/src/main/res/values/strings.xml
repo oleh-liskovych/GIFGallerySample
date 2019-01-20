@@ -5,9 +5,12 @@
     <string name="splash">Splash</string>
     <string name="button_send">Send</string>
     <string name="button_sign_up">Sign Up</string>
+
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_username">Username</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_hashtag">Hashtag</string>
 
     <string name="sign_in_message_no_account">Don\'t have account?</string>
 
@@ -34,8 +37,18 @@
     <string name="something_went_wrong">Something went wrong&#8230;</string>
     <string name="server_error">Please check your internet connection.</string>
     <string name="no_internet_connection">No internet connection</string>
+    <string name="empty_list_label">This list is empty</string>
+    <string name="empty_list_prompt">Upload a picture and it will show up here.</string>
 
     <string name="content_description_gallery_picture">Picture thumbnail</string>
     <string name="content_description_upload_picture">Upload picture</string>
+
+    <string name="menu_action_add">Upload Image</string>
+    <string name="menu_action_play_gif">Play Gif</string>
+    <string name="menu_action_exit">Log Out</string>
+
+    <string name="menu_action_confirm">Confirm</string>
+    <string name="fragment_gallery_title">Gallery</string>
+    <string name="fragment_upload_title">Upload picture</string>
 
 </resources>
