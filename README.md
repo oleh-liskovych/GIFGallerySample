@@ -7,6 +7,7 @@ GalleryAppSample is a demonstration app written in Kotlin
 - Kotlin
 - RxKotlin/RxAndroid
 - Coroutines
+- AndroidX
 - Android Architecture Components: ViewModel, LiveData, Navigation
 - Retrofit
 - Jackson
