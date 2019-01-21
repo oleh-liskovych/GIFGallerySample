@@ -18,7 +18,7 @@ import org.jetbrains.anko.find
 import java.lang.ref.WeakReference
 
 interface GalleryAdapterCallback {
-    fun onItemClickListener() // pass selected item as an argument
+    fun onItemClickListener()
 }
 
 interface GalleryHolderCallback {

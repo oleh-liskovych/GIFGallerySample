@@ -18,7 +18,7 @@ interface ImageApi {
     fun getAllImages(): Flowable<ImagesContainerBean>
 
     @GET(GIF)
-    fun getGif(@Path(WEATHER) weather: String?): Flowable<GifBean>
+    fun getGif(): Flowable<GifBean> // @Path(WEATHER) weather: String?
 
     @Multipart
     @POST(IMAGE)

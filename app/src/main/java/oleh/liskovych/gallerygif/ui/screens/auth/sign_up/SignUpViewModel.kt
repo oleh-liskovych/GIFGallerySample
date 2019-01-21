@@ -30,18 +30,11 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
     val passwordError = MutableLiveData<String>()
 
     init {
-        isLoadingLiveData.apply {
-            addSource(isSignUpSuccess) { this.value = false }
-            addSource(errorLiveData) { this.value = false }
-        }
+        setLoadingLiveData(isSignUpSuccess, errorLiveData)
     }
 
     private val signUpSuccessConsumer = Consumer<User> {
         isSignUpSuccess.postValue(true)
-    }
-
-    private val onSignUpError = Consumer<Throwable> {
-        // todo: Implement this method
     }
 
     fun validateUserData(picturePath: String?,
@@ -75,9 +68,8 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
         userProvider
             .signUp(filePath, username, email, password)
             .doOnRequest { showProgress() }
-            .doOnEach { hideProgress() }
             .compose(ioToMain())
-            .subscribe(signUpSuccessConsumer, onSignUpError)
+            .subscribe(signUpSuccessConsumer, onErrorConsumer)
             .addSubscription()
     }
 }

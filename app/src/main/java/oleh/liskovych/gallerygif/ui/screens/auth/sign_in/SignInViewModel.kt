@@ -29,10 +29,7 @@ class SignInViewModel(application: Application): BaseViewModel(application) {
     val passwordError = MutableLiveData<String>()
 
     init {
-        isLoadingLiveData.apply {
-            addSource(isSignInSuccess) { this.value = false }
-            addSource(errorLiveData) { this.value = false }
-        }
+        setLoadingLiveData(isSignInSuccess)
     }
 
     private val signInSuccessConsumer = Consumer<User> {

@@ -30,6 +30,8 @@
 
         <include layout="@layout/include_empty_list_placeholder"/>
 
+        <include layout="@layout/include_progress" />
+
     </FrameLayout>
 
 </LinearLayout>

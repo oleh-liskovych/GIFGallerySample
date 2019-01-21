@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_gallery.*
@@ -14,11 +15,14 @@ import oleh.liskovych.gallerygif.App
 import oleh.liskovych.gallerygif.R
 import oleh.liskovych.gallerygif.extensions.hide
 import oleh.liskovych.gallerygif.extensions.show
+import oleh.liskovych.gallerygif.models.Gif
 import oleh.liskovych.gallerygif.models.Image
 import oleh.liskovych.gallerygif.ui.base.BaseToolbarFragment
+import oleh.liskovych.gallerygif.ui.screens.main.MainViewModel
 import oleh.liskovych.gallerygif.ui.screens.main.gallery.adapter.GalleryAdapter
 import oleh.liskovych.gallerygif.ui.screens.main.gallery.adapter.GalleryAdapterCallback
-import oleh.liskovych.gallerygif.ui.screens.main.gallery.adapter.GalleryDiffCallback
+import oleh.liskovych.gallerygif.ui.screens.main.gif.GifDialogFragment
+import org.jetbrains.anko.support.v4.act
 import org.jetbrains.anko.support.v4.ctx
 
 class GalleryFragment: BaseToolbarFragment<GalleryViewModel>(),
@@ -36,8 +40,14 @@ class GalleryFragment: BaseToolbarFragment<GalleryViewModel>(),
 
     override val showToolbarBackArrow: Boolean = false
 
+    private val activityViewModel: MainViewModel by lazy { ViewModelProviders.of(act).get(MainViewModel::class.java) }
+
     private val imagesObserver = Observer<List<Image>> {
         adapter.putNewData(it)
+    }
+
+    private val gifObserver = Observer<Gif> {
+        showGifDialog(it)
     }
 
     private val emptyListPlaceholder = Observer<Boolean> {
@@ -46,6 +56,11 @@ class GalleryFragment: BaseToolbarFragment<GalleryViewModel>(),
 
     private val refreshObserver = Observer<Boolean> {
         swipeRefresh.isRefreshing = it
+    }
+
+    private val addedItemObserver = Observer<Boolean> {
+        if (it) viewModel.loadImages()
+        activityViewModel.itemAddedLiveData.postValue(false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,10 +77,16 @@ class GalleryFragment: BaseToolbarFragment<GalleryViewModel>(),
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.actionAdd -> navigateToUpload()
-            R.id.actionPlayGif -> {}
+            R.id.actionPlayGif -> viewModel.loadGif()
             R.id.actionExit -> navigateToAuth()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showGifDialog(gif: Gif) {
+        fragmentManager?.let {
+            GifDialogFragment.newInstance(gif).show(it, GifDialogFragment::class.java.simpleName)
+        }
     }
 
     override fun onRefresh() {
@@ -82,7 +103,9 @@ class GalleryFragment: BaseToolbarFragment<GalleryViewModel>(),
             imagesLiveData.observe(this@GalleryFragment, imagesObserver)
             emptyListPlaceholderLiveData.observe(this@GalleryFragment, emptyListPlaceholder)
             refreshLiveData.observe(this@GalleryFragment, refreshObserver)
+            gifLiveData.observe(this@GalleryFragment, gifObserver)
         }
+        activityViewModel.itemAddedLiveData.observe(this@GalleryFragment, addedItemObserver)
     }
 
     private fun setupSwipeRefreshLayout() {

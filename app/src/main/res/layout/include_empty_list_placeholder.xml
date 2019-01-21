@@ -36,6 +36,7 @@
     <TextView
         android:id="@+id/tvEmptyListPrompt"
         style="@style/EmptyStateLabels"
+        android:textColor="@android:color/darker_gray"
         android:text="@string/empty_list_prompt"
         android:layout_marginTop="@dimen/padding_4"
         app:layout_constraintBottom_toBottomOf="parent"

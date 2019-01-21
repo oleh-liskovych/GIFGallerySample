@@ -11,6 +11,8 @@ class MainActivity : BaseActivity<MainViewModel>() {
     override val viewModelClass = MainViewModel::class.java
     override val layoutId = R.layout.activity_main
 
+    override fun hasProgressBar() = true
+
     companion object {
         fun start(context: Context) {
             with(context) {

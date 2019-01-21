@@ -23,6 +23,8 @@ import oleh.liskovych.gallerygif.ui.screens.auth.sign_up.dialog.TakePictureDialo
 import oleh.liskovych.gallerygif.ui.screens.auth.sign_up.dialog.TakePictureType
 import oleh.liskovych.gallerygif.utils.FileUtils.pickedExistingPicture
 import oleh.liskovych.gallerygif.utils.ImageUtils
+import oleh.liskovych.gallerygif.utils.ImageUtils.getPictureLocation
+import oleh.liskovych.gallerygif.utils.MiscellaneousUtils
 import oleh.liskovych.gallerygif.utils.bindInterfaceOrThrow
 import oleh.liskovych.gallerygif.utils.validation.common.ValidationResponse
 import org.jetbrains.anko.support.v4.ctx
@@ -31,9 +33,9 @@ import java.io.File
 class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
 
     companion object {
-        private val CURRENT_TEMP_PHOTO_PATH_EXTRA = "CURRENT_TEMP_PHOTO_PATH" + SignUpFragment::class.java.simpleName
-        private val PHOTO_PATH_EXTRA = "PHOTO_PATH" + SignUpFragment::class.java.simpleName
-        private const val MAX_SIZE_IMAGE = 1024.0 * 1024.0 * 10
+        private val CURRENT_TEMP_PHOTO_PATH_EXTRA  = MiscellaneousUtils.getExtra("CURRENT_TEMP_PHOTO_PATH", SignUpFragment::class.java)
+        private val PHOTO_PATH_EXTRA = MiscellaneousUtils.getExtra("PHOTO_PATH", SignUpFragment::class.java)
+        private const val MAX_SIZE_IMAGE = 1024.0 * 1024 * 10
     }
 
     override val viewModelClass = SignUpViewModel::class.java

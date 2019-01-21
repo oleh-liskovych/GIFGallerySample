@@ -62,6 +62,11 @@
         <item name="android:windowExitAnimation">@anim/slide_out_down_quick</item>
     </style>
 
+    <style name="GifDialog">
+        <item name="android:windowEnterAnimation">@anim/fade_in_quick</item>
+        <item name="android:windowExitAnimation">@anim/fade_out_quick</item>
+    </style>
+
     <style name="ProfilePictureValidationMark">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
+import oleh.liskovych.gallerygif.network.exceptions.ApiException
 import oleh.liskovych.gallerygif.utils.withNotNull
 
 abstract class BaseViewModel(application: Application): AndroidViewModel(application) {
@@ -23,8 +24,8 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
     val isLoadingLiveData = MediatorLiveData<Boolean>()
 
     val onErrorConsumer = Consumer<Throwable> {
-//        val errorString = parseApiException(it)   // todo: Parse Api Exception
-        errorLiveData.postValue(it.message)
+        val errorString = parseApiException(it)
+        errorLiveData.postValue(errorString)
         hideProgress()
     }
 
@@ -59,9 +60,9 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
         isLoadingLiveData.postValue(show)
     }
 
-//    fun parseApiException(throwable: Throwable) =
-//            withNotNull(throwable as? Api)
-
     fun Disposable.addSubscription() = backgroundSubscriptions.add(this)
+
+    private fun parseApiException(throwable: Throwable): String =
+        (throwable as? ApiException)?.mMessage ?: EMPTY_ERROR
 
 }

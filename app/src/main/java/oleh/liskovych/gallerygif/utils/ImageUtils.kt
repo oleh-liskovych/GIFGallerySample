@@ -112,6 +112,56 @@ object ImageUtils {
         return true
     }
 
+    fun getPictureLocation(path: String): Pair<Float, Float>? {
+        val ei = ExifInterface(path)
+        val latitudeRaw = ei.getAttribute(ExifInterface.TAG_GPS_LATITUDE)
+        val latitudeRef = ei.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF)
+        val longitudeRaw = ei.getAttribute(ExifInterface.TAG_GPS_LONGITUDE)
+        val longitudeRef = ei.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF)
+
+        if (latitudeRaw == null || latitudeRef == null || longitudeRaw == null || longitudeRef == null) {
+            return null
+        }
+
+        var latitude: Float? = null
+        convertToDegree(latitudeRaw)?.let {
+            latitude = if (latitudeRef == "N") it else 0f - it
+        }
+        var longitude: Float? = null
+        convertToDegree(longitudeRaw)?.let {
+            longitude = if (longitudeRef == "E") it else 0f - it
+        }
+
+        return safeLet(latitude, longitude) { lat, lng ->
+             Pair(lat, lng)
+        } ?: return null
+    }
+
+    private fun convertToDegree(stringDMS: String): Float? {
+        var result: Float? = null
+        val DMS = stringDMS.split(",".toRegex(), 3).toTypedArray()
+
+        val stringD = DMS[0].split("/".toRegex(), 2).toTypedArray()
+        val d0 = stringD[0].toDouble()
+        val d1 = stringD[1].toDouble()
+        val floatD = d0 / d1
+
+        val stringM = DMS[1].split("/".toRegex(), 2).toTypedArray()
+        val m0 = stringM[0].toDouble()
+        val m1 = stringM[1].toDouble()
+        val floatM = m0 / m1
+
+        val stringS = DMS[2].split("/".toRegex(), 2).toTypedArray()
+        val s0 = stringS[0].toDouble()
+        val s1 = stringS[1].toDouble()
+        val floatS = s0 / s1
+
+        result = (floatD + (floatM / 60) + (floatS / 3600)).toFloat()
+
+        return result
+
+    }
+
     fun modifyImageToNormalOrientation(bitmap: Bitmap, path: String): Bitmap {
         val ei = ExifInterface(path)
         val orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL)

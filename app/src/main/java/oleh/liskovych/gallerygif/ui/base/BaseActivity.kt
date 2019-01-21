@@ -63,7 +63,7 @@ abstract class BaseActivity<T : BaseViewModel> : AppCompatActivity(),
         showSnackBar(find(android.R.id.content), res)
     }
 
-    override fun backPressed() { // todo: replace it with something more Navigationable
+    override fun backPressed() {
         with(supportFragmentManager) {
             backStackEntryCount.takeUnless { it == 0 }?.let { popBackStack() } ?: onBackPressed()
         }

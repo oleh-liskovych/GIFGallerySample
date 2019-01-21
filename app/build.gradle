@@ -88,4 +88,13 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-databind:$jackson_version"
     implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.4"
     implementation "com.squareup.okhttp3:logging-interceptor:$okttp_version"
+
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
+
+    // Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    // Gms
+    implementation ("com.google.android.gms:play-services-location:$play_service_version")
 }

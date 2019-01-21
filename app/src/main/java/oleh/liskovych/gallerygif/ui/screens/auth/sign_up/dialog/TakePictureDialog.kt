@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.dialog_take_picture.*
 import oleh.liskovych.gallerygif.R
 import oleh.liskovych.gallerygif.extensions.setClickListeners
 import oleh.liskovych.gallerygif.ui.base.BaseDialogFragment
-import oleh.liskovych.gallerygif.utils.getDimensionPixelSizeApp
 
 class TakePictureDialog: BaseDialogFragment(), View.OnClickListener {
 

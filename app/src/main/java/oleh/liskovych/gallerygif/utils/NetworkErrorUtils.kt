@@ -2,6 +2,13 @@ package oleh.liskovych.gallerygif.utils
 
 import io.reactivex.Flowable
 import io.reactivex.functions.Function
+import oleh.liskovych.gallerygif.EMPTY_STRING
+import oleh.liskovych.gallerygif.network.SNetworkModule
+import oleh.liskovych.gallerygif.network.error.ErrorTypeOne
+import oleh.liskovych.gallerygif.network.error.ErrorTypeTwo
+import oleh.liskovych.gallerygif.network.error.validation.ValidationError
+import oleh.liskovych.gallerygif.network.error.validation.ValidationErrorChildren
+import oleh.liskovych.gallerygif.network.exceptions.ApiException
 import oleh.liskovych.gallerygif.network.exceptions.NoNetworkException
 import oleh.liskovych.gallerygif.network.exceptions.ServerException
 import retrofit2.HttpException
@@ -14,8 +21,6 @@ import java.net.UnknownHostException
 
 object NetworkErrorUtils {
 
-    private const val NO_STATUS_CODE = -1
-    private const val SERVER_ERROR_BAD_REQUEST = 400
     private const val SERVER_ERROR_NOT_FOUND = 404
     private const val SERVER_ERROR_NOT_ALLOWED = 405
 
@@ -28,7 +33,7 @@ object NetworkErrorUtils {
     private fun parseError(throwable: Throwable): Throwable? {
         return if (throwable is HttpException) {
             val code = throwable.code()
-            if (code == SERVER_ERROR_NOT_FOUND || code == SERVER_ERROR_NOT_ALLOWED || code == SERVER_ERROR_BAD_REQUEST) {
+            if (code == SERVER_ERROR_NOT_FOUND || code == SERVER_ERROR_NOT_ALLOWED) {
                 LOG.e(TAG, throwable = throwable)
                 return ServerException().initCause(throwable)
             }
@@ -43,8 +48,8 @@ object NetworkErrorUtils {
         throwable is UnknownHostException || throwable is ConnectException
 
     private fun parseErrorResponseBody(response: Response<*>): Exception {
-        val inputStreamReader: InputStreamReader?
-        val bufferedReader: BufferedReader?
+        var inputStreamReader: InputStreamReader? = null
+        var bufferedReader: BufferedReader? = null
         try {
             inputStreamReader = InputStreamReader(response.errorBody()?.byteStream())
             bufferedReader = BufferedReader(inputStreamReader)
@@ -54,16 +59,51 @@ object NetworkErrorUtils {
                 sb.append(newLine)
             }
 
-            // todo: parse errors
-
-
+            var errorMessage: String? = null
+            var validationError: ValidationErrorChildren? = null
+            tryDifferentErrors(sb.toString())?.let {
+                when(it) {
+                    is ErrorTypeOne -> errorMessage = it.error
+                    is ErrorTypeTwo -> errorMessage = it.error?.message
+                    is ValidationError -> validationError = it.children
+                }
+            }
+            if (!errorMessage.isNullOrEmpty() || validationError != null) {
+                return ApiException(response.code(), errorMessage, validationError)
+            }
         } catch (e: IOException) {
             LOG.e(TAG, throwable = e)
+        } finally {
+            bufferedReader?.let {
+                try {
+                    it.close()
+                } catch (e: IOException) {
+                    LOG.e(TAG, throwable = e)
+                }
+            }
+            inputStreamReader?.let {
+                try {
+                    it.close()
+                } catch (e: IOException) {
+                    LOG.e(TAG, throwable = e)
+                }
+            }
         }
+        return ApiException(response.code(), "Error not recognized", null)
+    }
 
-
-
-        throw Exception() // todo: remove it
+    private fun tryDifferentErrors(response: String): Any? {
+        val errorTypes = arrayOf(ErrorTypeOne::class.java, ErrorTypeTwo::class.java, ValidationError::class.java)
+        var error: Any? = null
+        errorTypes.forEach {
+            try {
+                error = SNetworkModule.mapper.readValue(response, it)
+                return@forEach
+            } catch (e: IOException) {
+                LOG.e(TAG, "Couldn't parse error response to ${it.simpleName}: " + e.message)
+            }
+        }
+        return error
     }
 
 }

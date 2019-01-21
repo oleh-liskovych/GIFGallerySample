@@ -42,7 +42,7 @@ class ImageModuleImpl(api: ImageApi): BaseRxModule<ImageApi, ImageBean, Image>(a
             .map { converter.convertListInToOut(it) }
 
     override fun getGif(weather: String?): Flowable<Gif> =
-        api.getGif(weather)
+        api.getGif()
             .onErrorResumeNext(NetworkErrorUtils.rxParseError())
             .map { gifBeanConverter.convertInToOut(it) }
 
