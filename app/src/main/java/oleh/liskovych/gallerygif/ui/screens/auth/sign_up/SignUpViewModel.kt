@@ -1,15 +1,12 @@
 package oleh.liskovych.gallerygif.ui.screens.auth.sign_up
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.functions.Consumer
 import oleh.liskovych.gallerygif.SPACE_STRING
 import oleh.liskovych.gallerygif.models.User
 import oleh.liskovych.gallerygif.network.exceptions.ApiException
-import oleh.liskovych.gallerygif.providers.ProviderInjector
 import oleh.liskovych.gallerygif.providers.ProviderInjector.userProvider
-import oleh.liskovych.gallerygif.providers.UserProvider
 import oleh.liskovych.gallerygif.ui.base.BaseViewModel
 import oleh.liskovych.gallerygif.utils.ValidatorFactory
 import oleh.liskovych.gallerygif.utils.ioToMain
@@ -35,7 +32,8 @@ class SignUpViewModel(application: Application): BaseViewModel(application) {
     val passwordError = MutableLiveData<String>()
 
     init {
-        setLoadingLiveData(isSignUpSuccess, errorLiveData)
+        setLoadingLiveData(isSignUpSuccess, errorLiveData,
+            avatarError, usernameError, emailError, passwordError)
     }
 
     private val signUpSuccessConsumer = Consumer<User> {

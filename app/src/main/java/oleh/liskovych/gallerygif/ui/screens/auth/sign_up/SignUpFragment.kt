@@ -73,12 +73,39 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
             }
     }
 
+    private val avatarServerErrorObserver = Observer<Boolean> {
+        tvPictureValidationMark.run {
+            if (it) {
+                show()
+                text = getString(R.string.profile_picture_is_absent)
+            } else hide()
+        }
+    }
+
+    private val usernameServerError = Observer<String> { raw ->
+        raw.takeIf { it.isNotBlank() }?.let { result -> showErrorInField(etUsername, result) }
+    }
+
+    private val emailServerError = Observer<String> { raw ->
+        raw.takeIf { it.isNotBlank() }?.let { result -> showErrorInField(etEmail, result) }
+    }
+
+    private val passwordServerError = Observer<String> { raw ->
+        raw.takeIf { it.isNotBlank() }?.let { result -> showErrorInField(etPassword, result) }
+    }
+
     override fun observeLiveData(viewModel: SignUpViewModel) {
         with(viewModel) {
             isValid.observe(this@SignUpFragment, validationObserver)
             isEmailValid.observe(this@SignUpFragment, emailObserver)
             isPasswordsValid.observe(this@SignUpFragment, passwordObserver)
             isPicturePathValid.observe(this@SignUpFragment,pictureObserver)
+
+            avatarError.observe(this@SignUpFragment, avatarServerErrorObserver)
+            usernameError.observe(this@SignUpFragment, usernameServerError)
+            emailError.observe(this@SignUpFragment, emailServerError)
+            passwordError.observe(this@SignUpFragment, passwordServerError)
+
             isSignUpSuccess.observe(this@SignUpFragment, signUpSuccessObserver)
         }
     }
@@ -232,7 +259,7 @@ class SignUpFragment : BaseFragment<SignUpViewModel>(), View.OnClickListener {
 
     private fun validateFields() {
         tvPictureValidationMark.hide()
-        hideInputFieldsErrors(etEmail, etPassword)
+        hideInputFieldsErrors(etUsername, etEmail, etPassword)
         validateUserData()
     }
 
