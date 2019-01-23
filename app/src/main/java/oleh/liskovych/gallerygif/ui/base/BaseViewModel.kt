@@ -4,12 +4,10 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import oleh.liskovych.gallerygif.network.exceptions.ApiException
-import oleh.liskovych.gallerygif.utils.withNotNull
 
 abstract class BaseViewModel(application: Application): AndroidViewModel(application) {
 
@@ -54,10 +52,6 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
 
     fun hideProgress() {
         isLoadingLiveData.postValue(false)
-    }
-
-    private fun showProgress(show: Boolean) {
-        isLoadingLiveData.postValue(show)
     }
 
     fun Disposable.addSubscription() = backgroundSubscriptions.add(this)
